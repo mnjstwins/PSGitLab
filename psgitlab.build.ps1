@@ -85,7 +85,7 @@ Task Pester -inputs { gci -Path "$projectRoot\$ModuleName\","$projectRoot\Tests\
 }
 
 $mergePSM1Parameters = @{
-    inputs = { Get-ChildItem -Path "Git:\PSGitLab\PSGitLab\" -Recurse | Where-Object { -not $_.PSisContainer } }
+    inputs = { Get-ChildItem -Path "$projectRoot\$ModuleName\" -Recurse | Where-Object { -not $_.PSisContainer } }
     outputs = "$ReleaseDirectory\$ModuleName.psm1"
 }
 
