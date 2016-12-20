@@ -30,7 +30,7 @@ task Init {
 }
 
 # Synopsis: PSScriptAnalyzer 
-task Analyze -inputs { gci -Path "$projectRoot\$ModuleName\" -File -Recurse } -outputs $PSScriptResultsFile   Build,{
+task Analyze -inputs { gci -Path "$projectRoot\$ModuleName\" -Recurse | Where-Object { -not $_.PSIsContainer } } -outputs $PSScriptResultsFile   Build,{
     # Modify PSModulePath of the current PowerShell session.
     # We want to make sure we always test the development version of the resource
     # in the current build directory.
@@ -85,7 +85,7 @@ Task Pester -inputs { gci -Path "$projectRoot\$ModuleName\","$projectRoot\Tests\
 }
 
 $mergePSM1Parameters = @{
-    inputs = { Get-ChildItem -Path "Git:\PSGitLab\PSGitLab\" -Recurse -File | Where-Object { -not $_.PSisContainer } }
+    inputs = { Get-ChildItem -Path "Git:\PSGitLab\PSGitLab\" -Recurse | Where-Object { -not $_.PSisContainer } }
     outputs = "$ReleaseDirectory\$ModuleName.psm1"
 }
 
