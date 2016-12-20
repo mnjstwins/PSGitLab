@@ -25,8 +25,8 @@ task Init {
     $modules = 'Pester', 'PSDeploy', 'PSScriptAnalyzer', 'PlatyPS'
     Import-Module $modules -Verbose:$false -Force	
 
-    if ( -not ( test-path -Path $ReleaseDirectory ) ) { New-Item -ItemType Directory -Path $projectRoot -Name Release }
-    if ( -not ( test-path -Path $ResultsDirectory ) ) { New-Item -ItemType Directory -Path $projectRoot -Name Results }
+    if ( -not ( test-path -Path $ReleaseDirectory ) ) { New-Item -ItemType Directory -Path $projectRoot -Name Release | Out-Null }
+    if ( -not ( test-path -Path $ResultsDirectory ) ) { New-Item -ItemType Directory -Path $projectRoot -Name Results | Out-Null}
 }
 
 # Synopsis: PSScriptAnalyzer 
@@ -85,7 +85,7 @@ Task Pester -inputs { gci -Path "$projectRoot\$ModuleName\","$projectRoot\Tests\
 }
 
 $mergePSM1Parameters = @{
-    inputs = { gci -Path "Git:\PSGitLab\PSGitLab\" -File -Recurse }
+    inputs = { Get-ChildItem -Path "Git:\PSGitLab\PSGitLab\" -Recurse -File }
     outputs = "$ReleaseDirectory\$ModuleName.psm1"
 }
 
