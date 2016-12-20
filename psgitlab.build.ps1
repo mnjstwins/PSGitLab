@@ -45,7 +45,7 @@ task Analyze -inputs { gci -Path "$projectRoot\$ModuleName\" -Recurse | Where-Ob
         'PSAvoidUsingConvertToSecureStringWithPlainText', # For private token information
         'PSAvoidUsingUserNameAndPassWordParams' # this refers to gitlab users and passwords
     )
-    $saResults = Invoke-ScriptAnalyzer -Path $ModuleName -Severity Error -ExcludeRule $excludedRules -Recurse -Verbose:$false
+    $saResults = Invoke-ScriptAnalyzer -Path $ModuleName -Severity Error,Warning -ExcludeRule $excludedRules -Recurse -Verbose:$false
 
     # Restore PSModulePath
     if ($origModulePath -ne $env:PSModulePath) {

@@ -85,6 +85,10 @@ Describe 'Module Information' -Tags 'Command'{
             $Script:Manifest.ExportedFormatFiles | Should not BeNullOrEmpty
         }
 
+        It 'Fake Test' {
+            1 + 1 | Should be 3
+        }
+
         It 'Required Modules' {
             $Script:Manifest.RequiredModules | Should BeNullOrEmpty
         }
