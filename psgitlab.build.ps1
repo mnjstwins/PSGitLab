@@ -1,6 +1,6 @@
 Set-BuildEnvironment
 
-$ModuleName = 'PSGitLab'
+$ModuleName = $env:BHProjectName
 $projectRoot = $ENV:BHProjectPath
 if(-not $projectRoot) {
 	$projectRoot = $PSScriptRoot
@@ -20,7 +20,7 @@ $psVersion = $PSVersionTable.PSVersion.ToString()
 task Init {
     "`nSTATUS: Testing with PowerShell {0}" -f $psVersion
     "Build System Details:"
-    Get-Item ENV:BH*
+    Get-Item ENV:BH* | ft Name,Value -AutoSize
 
     $modules = 'Pester', 'PSDeploy', 'PSScriptAnalyzer', 'PlatyPS'
     Import-Module $modules -Verbose:$false -Force	
