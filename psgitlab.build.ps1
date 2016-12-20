@@ -61,7 +61,7 @@ task Analyze -inputs { gci -Path "$projectRoot\$ModuleName\" -File -Recurse } -o
 }
 
 # Synopsis: Pester Tests
-Task Pester -inputs { gci -Path "$projectRoot\$ModuleName\","$projectRoot\Tests\" -File -Recurse } -outputs $PesterResultsFile Build, {
+Task Pester -inputs { gci -Path "$projectRoot\$ModuleName\","$projectRoot\Tests\" -Recurse | Where-Object { -not $_.PSisContainer } } -outputs $PesterResultsFile Build, {
     if(-not $ENV:BHProjectPath) {
         Set-BuildEnvironment -Path $PSScriptRoot\..
     }
@@ -85,7 +85,7 @@ Task Pester -inputs { gci -Path "$projectRoot\$ModuleName\","$projectRoot\Tests\
 }
 
 $mergePSM1Parameters = @{
-    inputs = { Get-ChildItem -Path "Git:\PSGitLab\PSGitLab\" -Recurse -File }
+    inputs = { Get-ChildItem -Path "Git:\PSGitLab\PSGitLab\" -Recurse -File | Where-Object { -not $_.PSisContainer } }
     outputs = "$ReleaseDirectory\$ModuleName.psm1"
 }
 
