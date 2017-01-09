@@ -1,5 +1,7 @@
-Function Get-GitLabCommitStats {
+Function Get-GitLabCommitStat {
+[Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidDefaultValueForMandatoryParameter", "author")]
 [cmdletbinding()]
+[Alias('Get-GitLabCommitStats')]
 [OutputType('GitLab.Commit')]
 param(
     [Parameter(ParameterSetName="Id",Mandatory=$true)]
