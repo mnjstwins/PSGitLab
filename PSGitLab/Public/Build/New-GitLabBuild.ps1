@@ -1,5 +1,5 @@
 Function New-GitLabBuild {
-[cmdletbinding()]
+[cmdletbinding(SupportsShouldProcess=$true,ConfirmImpact='Low')]
 param(
     [ValidateNotNullOrEmpty()]
     [Parameter(ParameterSetName="Default",Mandatory=$true)]
@@ -42,12 +42,14 @@ param(
     }
     $bodyLines += "--$boundary--$LF"
     
-    try {
-        $result = Invoke-RestMethod -Uri $uri -Method Post -ContentType "multipart/form-data; boundary=`"$boundary`"" -Body $bodyLines
-        Write-Debug $result
-        Write-Output "Build trigger sent successfully"
-    }
-    catch {
-        Write-Output ($x.ErrorDetails.Message | convertfrom-json).message
+    if ($PSCmdlet.ShouldProcess('New Build')) {
+        try {
+            $result = Invoke-RestMethod -Uri $uri -Method Post -ContentType "multipart/form-data; boundary=`"$boundary`"" -Body $bodyLines
+            Write-Debug $result
+            Write-Output "Build trigger sent successfully"
+        }
+        catch {
+            Write-Output ($x.ErrorDetails.Message | convertfrom-json).message
+        }
     }
 }

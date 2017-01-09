@@ -1,7 +1,7 @@
 Function New-GitLabUser {
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidUsingUserNameAndPassWordParams", "")]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidUsingPlainTextForPassword", "")]
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess=$true)]
     param (
         [ValidateNotNullOrEmpty()]
         [Parameter(Mandatory=$true)]
@@ -54,9 +54,11 @@ Function New-GitLabUser {
         Body = $Body
     }
 
-    $Results = QueryGitLabAPI -Request $Request -ObjectType 'GitLab.User'
-    if ($Passthru.IsPresent) {
-        $Results
+    if ($PSCmdlet.ShouldProcess($UserName, 'Create User')) {
+        $Results = QueryGitLabAPI -Request $Request -ObjectType 'GitLab.User'
+        if ($Passthru.IsPresent) {
+            $Results
+        }
     }
 
 }

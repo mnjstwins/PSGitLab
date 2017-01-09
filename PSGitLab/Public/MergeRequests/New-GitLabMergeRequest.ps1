@@ -1,5 +1,5 @@
 Function New-GitLabMergeRequest {
-    [cmdletbinding()]
+    [cmdletbinding(SupportsShouldProcess=$true)]
     param(
         [ValidateNotNullOrEmpty()]
         [Parameter(Mandatory)]
@@ -58,5 +58,7 @@ Function New-GitLabMergeRequest {
         Method='POST';
     }
 
-    QueryGitLabAPI -Request $Request -ObjectType 'GitLab.MergeRequest'
+    if ($PSCmdlet.ShouldProcess($Title, 'Create Merge Request')) {
+        QueryGitLabAPI -Request $Request -ObjectType 'GitLab.MergeRequest'
+    }
 }

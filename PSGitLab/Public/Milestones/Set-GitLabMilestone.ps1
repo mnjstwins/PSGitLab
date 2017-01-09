@@ -1,5 +1,5 @@
 Function Set-GitLabMilestone {
-    [cmdletbinding()]
+    [cmdletbinding(SupportsShouldProcess=$true)]
     param(
         [Alias('project_id')]
         [ValidateNotNullOrEmpty()]
@@ -54,10 +54,12 @@ PROCESS {
             Method = 'PUT'
         }
 
-        $Results = QueryGitLabAPI -Request $Request -ObjectType 'GitLab.Milestone'
+        if ($PSCmdlet.ShouldProcess($Milestone.Name, 'Modify Project')) {
+            $Results = QueryGitLabAPI -Request $Request -ObjectType 'GitLab.Milestone'
 
-        if ( $Passthru.isPresent ) {
-            $Results
+            if ( $Passthru.isPresent ) {
+                $Results
+            }
         }
     }
 }

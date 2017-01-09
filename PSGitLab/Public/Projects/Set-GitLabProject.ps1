@@ -1,6 +1,6 @@
 Function Set-GitLabProject 
 {
-    [cmdletbinding()]
+    [cmdletbinding(SupportsShouldProcess=$true)]
     param(
         
         [ValidateNotNullOrEmpty()]
@@ -61,10 +61,12 @@ PROCESS {
             ContentType = 'application/x-www-form-urlencoded'
         }
 
-        $Results = QueryGitLabAPI -Request $Request -ObjectType 'GitLab.User'
+        if ($PSCmdlet.ShouldProcess($Project.Name, 'Modify Project')) {
+            $Results = QueryGitLabAPI -Request $Request -ObjectType 'GitLab.Project'
 
-        if ( $Passthru.isPresent ) {
-            $Results
+            if ( $Passthru.isPresent ) {
+                $Results
+            }
         }
     }
 }

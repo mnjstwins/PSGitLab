@@ -1,5 +1,5 @@
 Function New-GitLabUserKey {
-    [cmdletbinding(DefaultParameterSetName='Explicit')]
+    [cmdletbinding(DefaultParameterSetName='Explicit',SupportsShouldProcess=$true)]
     [OutputType('GitLab.User.Key')]
     param(
         [Parameter(ParameterSetName='Explicit')]
@@ -35,6 +35,7 @@ Function New-GitLabUserKey {
         Body = $Body
     }
 
-   
-    QueryGitLabAPI -Request $Request -ObjectType 'GitLab.User.Key'      
+    if ($PSCmdlet.ShouldProcess($Title, 'Create Key')) {
+        QueryGitLabAPI -Request $Request -ObjectType 'GitLab.User.Key'      
+    }
 }

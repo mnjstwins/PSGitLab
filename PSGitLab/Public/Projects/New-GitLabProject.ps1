@@ -1,5 +1,5 @@
 Function New-GitLabProject {
-    [cmdletbinding()]
+    [cmdletbinding(SupportsShouldProcess=$true)]
     param(
         [ValidateNotNull()]
         [ValidateNotNullOrEmpty()]
@@ -53,7 +53,9 @@ Function New-GitLabProject {
             Body=$Body;
         }
 
-        QueryGitLabAPI -Request $Request -ObjectType 'GitLab.Project'
+        if ($PSCmdlet.ShouldProcess($Name, 'Create Project')) {
+            QueryGitLabAPI -Request $Request -ObjectType 'GitLab.Project'
+        }
         }
     }
     catch {

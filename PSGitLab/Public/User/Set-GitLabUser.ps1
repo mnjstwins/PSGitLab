@@ -1,7 +1,7 @@
 Function Set-GitLabUser {
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidUsingUserNameAndPassWordParams", "")]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidUsingPlainTextForPassword", "")]
-    [cmdletbinding()]
+    [cmdletbinding(SupportsShouldProcess=$true)]
     param(
         [ValidateNotNullOrEmpty()]
         [Parameter(Mandatory=$true,ParameterSetName='ID')]
@@ -62,8 +62,10 @@ Function Set-GitLabUser {
     #Write-Debug -Message "Before Request"
     Write-Verbose "Body: $( $Body | ConvertTo-Json ) "
 
-    $Results = QueryGitLabAPI -Request $Request -ObjectType 'GitLab.User'
-    if ($Passthru.IsPresent) {
-        $Results
+    if ($PSCmdlet.ShouldProcess($User.Username, 'Modify User')) {
+        $Results = QueryGitLabAPI -Request $Request -ObjectType 'GitLab.User'
+        if ($Passthru.IsPresent) {
+            $Results
+        }
     }
 }

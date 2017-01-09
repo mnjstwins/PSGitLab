@@ -1,5 +1,5 @@
 Function New-GitLabFork {
-    [cmdletbinding()]
+    [cmdletbinding(SupportsShouldProcess=$true)]
     param(
         [ValidateNotNull()]
         [ValidateNotNullOrEmpty()]
@@ -22,6 +22,7 @@ Function New-GitLabFork {
         URI="/projects/fork/$($Project.id)";
         Method='POST';
     }
-
-    QueryGitLabAPI -Request $Request -ObjectType 'GitLab.Project'
+    if ($PSCmdlet.ShouldProcess($Project.Name, 'Create Project Fork')) {
+        QueryGitLabAPI -Request $Request -ObjectType 'GitLab.Project'
+    }
 }

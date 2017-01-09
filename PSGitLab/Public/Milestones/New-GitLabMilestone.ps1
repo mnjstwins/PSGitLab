@@ -1,5 +1,5 @@
 Function New-GitLabMilestone {
-    [cmdletbinding()]
+    [cmdletbinding(SupportsShouldProcess=$true)]
     param(
         [ValidateNotNullOrEmpty()]
         [Parameter(Mandatory)]
@@ -33,5 +33,7 @@ Function New-GitLabMilestone {
         Method='POST';
     }
 
-    QueryGitLabAPI -Request $Request -ObjectType 'GitLab.Milestone'
+    if ($PSCmdlet.ShouldProcess('Create Milestone')) {
+        QueryGitLabAPI -Request $Request -ObjectType 'GitLab.Milestone'
+    }
 }

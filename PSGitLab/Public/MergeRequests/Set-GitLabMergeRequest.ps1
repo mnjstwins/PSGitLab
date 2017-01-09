@@ -1,5 +1,5 @@
 Function Set-GitLabMergeRequest {
-    [cmdletbinding()]
+    [cmdletbinding(SupportsShouldProcess=$true)]
     param(
         [Alias('project_id')]
         [ValidateNotNullOrEmpty()]
@@ -71,10 +71,12 @@ PROCESS {
             Method = 'PUT'
         }
 
-        $Results = QueryGitLabAPI -Request $Request -ObjectType 'GitLab.MergeRequest'
+        if ($PSCmdlet.ShouldProcess($MergeRequest.Title, 'Modify Merge Request')) {
+            $Results = QueryGitLabAPI -Request $Request -ObjectType 'GitLab.MergeRequest'
 
-        if ( $Passthru.isPresent ) {
-            $Results
+            if ( $Passthru.isPresent ) {
+                $Results
+            }
         }
     }
 }
