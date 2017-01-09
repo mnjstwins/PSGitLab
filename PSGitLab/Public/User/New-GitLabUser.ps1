@@ -10,7 +10,7 @@ Function New-GitLabUser {
         [ValidateNotNullOrEmpty()]
         [ValidatePattern("(?# Error: Password Must Contain at least 8 characters).{8,}")]
         [Parameter(Mandatory=$true)]
-        [securestring]$Password,
+        [string]$Password,
 
         [ValidateNotNullOrEmpty()]
         [Parameter(Mandatory=$true)]        
