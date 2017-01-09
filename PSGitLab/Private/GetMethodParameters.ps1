@@ -1,4 +1,6 @@
 Function GetMethodParameters {
+# PSScript Analyzer misses the variables used by the escapedatastring method. 
+[Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseDeclaredVarsMoreThanAssignments", "")]
 [cmdletbinding()]
 param(
     $GetURLParameters

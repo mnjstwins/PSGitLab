@@ -1,4 +1,6 @@
 Function New-GitLabUser {
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidUsingUserNameAndPassWordParams", "")]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidUsingPlainTextForPassword", "")]
     [CmdletBinding()]
     param (
         [ValidateNotNullOrEmpty()]
@@ -8,7 +10,7 @@ Function New-GitLabUser {
         [ValidateNotNullOrEmpty()]
         [ValidatePattern("(?# Error: Password Must Contain at least 8 characters).{8,}")]
         [Parameter(Mandatory=$true)]
-        [string]$Password,
+        [securestring]$Password,
 
         [ValidateNotNullOrEmpty()]
         [Parameter(Mandatory=$true)]        

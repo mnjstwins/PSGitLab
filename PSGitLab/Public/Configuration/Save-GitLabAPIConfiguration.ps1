@@ -1,4 +1,6 @@
 Function Save-GitLabAPIConfiguration {
+# Plaintext is required to take in the token. It is then stored securely. 
+[Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidUsingConvertToSecureStringWithPlainText", "")]
 [cmdletbinding()]
 param(
     [Parameter(Mandatory=$true,

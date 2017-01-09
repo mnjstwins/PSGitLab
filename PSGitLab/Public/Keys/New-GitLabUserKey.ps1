@@ -20,7 +20,7 @@ Function New-GitLabUserKey {
         Write-Verbose "Title: $Title Key: $Key"
     }
 
-    if ($Title -eq $null) {
+    if ( $null -eq $Title ) {
         Write-Error "Title could not be determined."
     }
 

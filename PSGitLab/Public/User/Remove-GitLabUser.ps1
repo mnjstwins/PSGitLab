@@ -21,7 +21,7 @@ Function Remove-GitLabUser {
             }
 
             if ( $PSCmdlet.ShouldProcess("Delete User $Username") ) {
-                $Results = QueryGitLabAPI -Request $Request -ObjectType 'GitLab.User'
+                QueryGitLabAPI -Request $Request -ObjectType 'GitLab.User' | Out-Null
             }
 
         }

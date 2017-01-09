@@ -45,10 +45,10 @@ PROCESS {
 
         $Body = @{}
 
-        if ($Name -ne $null) { $Body.Add('name',$Name) }
-        if ($Path -ne $null) { $Body.Add('path',$Path) }
-        if ($Description -ne $null) { $Body.Add('description',$Description) }
-        if ($VisabilityLevel -ne $null ) { $Body.Add('visibility_level', (GetVisibilityLevel $VisabilityLevel) )}
+        if ( $null -ne $Name ) { $Body.Add('name',$Name) }
+        if ( $null -ne $Path ) { $Body.Add('path',$Path) }
+        if ( $null -ne $Description ) { $Body.Add('description',$Description) }
+        if ( $null -ne $VisabilityLevel ) { $Body.Add('visibility_level', (GetVisibilityLevel $VisabilityLevel) )}
 
         Write-Verbose ( $PSBoundParameters | ConvertTo-Json )
 

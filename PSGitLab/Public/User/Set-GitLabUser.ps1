@@ -1,4 +1,6 @@
 Function Set-GitLabUser {
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidUsingUserNameAndPassWordParams", "")]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidUsingPlainTextForPassword", "")]
     [cmdletbinding()]
     param(
         [ValidateNotNullOrEmpty()]

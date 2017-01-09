@@ -23,7 +23,7 @@ param(
         $MergeRequest = Get-GitLabMergeRequest -Project $ProjectId -Id $Id
 
         if ($PSCmdlet.ShouldProcess($MergeRequest.Title, 'Delete Merge Request')) {
-            $Worked = QueryGitLabAPI -Request $Request -ObjectType 'GitLab.MergeRequest'
+            QueryGitLabAPI -Request $Request -ObjectType 'GitLab.MergeRequest' | Out-Null
         }
 
     }

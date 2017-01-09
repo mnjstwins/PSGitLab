@@ -19,7 +19,7 @@ param(
         $Project = Get-GitLabProject -Id $Id
 
         if ($PSCmdlet.ShouldProcess($Project.Name, 'Delete Project')) {
-            $Worked = QueryGitLabAPI -Request $Request -ObjectType 'GitLab.Project'
+            QueryGitLabAPI -Request $Request -ObjectType 'GitLab.Project' | Out-Null
         }
 
     }

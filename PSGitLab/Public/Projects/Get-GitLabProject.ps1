@@ -102,7 +102,7 @@ Function Get-GitLabProject {
             $GetUrlParameters += @{archived='true'}
         }
 
-        if ($search -ne $null) {
+        if ( $null -ne $search ) {
             $GetUrlParameters += @{search=$search}
         }
         $GetUrlParameters += @{order_by=$order_by}
