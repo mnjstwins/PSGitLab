@@ -5,7 +5,7 @@ Get-Module $ModuleName | Remove-Module
 
 Import-Module $ModuleManifest
 
-Get-Command -Module $ModuleName | ForEach-Object {
+Get-Command -Module $ModuleName | Where-Object { $_.CommandType -ne 'Alias' } | ForEach-Object {
     Describe "$_" -Tags "$_","Help" {
         Context "Function Help" { 
             It 'Synopsis not empty' {
@@ -92,7 +92,7 @@ Describe 'Module Information' -Tags 'Command'{
 
     Context 'Exported Functions' {
         It 'Proper Number of Functions Exported' {
-            $ExportedCount = Get-Command -Module $ModuleName | Measure-Object | Select-Object -ExpandProperty Count
+            $ExportedCount = Get-Command -Module $ModuleName | Where-Object { $_.CommandType -ne 'Alias' } | Measure-Object | Select-Object -ExpandProperty Count
             $FileCount = Get-ChildItem -Path "$PSScriptRoot\..\$ModuleName\Public" -Filter *.ps1 -Recurse | Measure-Object | Select-Object -ExpandProperty Count
 
             $ExportedCount | Should be $FileCount
