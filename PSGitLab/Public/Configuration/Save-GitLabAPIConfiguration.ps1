@@ -17,15 +17,37 @@ param(
     $Domain
 )
 
-$Parameters = @{
-    Token=(ConvertTo-SecureString -string $Token -AsPlainText -Force)
-    Domain=$Domain;
+if ( $Domain -match '^http:\/\/' ) {
+    Write-Warning "All tokens will be sent over HTTP. Recommendation: Use HTTPS."
 }
-$ConfigPath = "$env:appdata\PSGitLab\PSGitLabConfiguration.xml"
-if (-not (Test-Path (Split-Path $ConfigPath))) {
-    New-Item -ItemType Directory -Path (Split-Path $ConfigPath) | Out-Null
+
+if ( $IsWindows -or ( [version]$PSVersionTable.PSVersion -lt [version]"5.99.0" ) ) {
+    
+    $Parameters = @{
+        Token=(ConvertTo-SecureString -string $Token -AsPlainText -Force)
+        Domain=$Domain;
+    }
+    
+    $ConfigFile = "$env:appdata\PSGitLab\PSGitLabConfiguration.xml"
+
+} elseif ( $IsLinux ) {
+
+    Write-Warning "Warning: Your GitLab token will be stored in plain-text on non-Windows platforms."
+
+    $Parameters = @{
+        Token=$Token
+        Domain=$Domain;
+    }
+    
+    $ConfigFile = "{0}/.psgitlab/PSGitLabConfiguration.xml" -f $HOME
+
+} else {
+    Write-Error "Unknown Platform"
+}
+if (-not (Test-Path (Split-Path $ConfigFile))) {
+    New-Item -ItemType Directory -Path (Split-Path $ConfigFile) | Out-Null
 
 }
-$Parameters | Export-Clixml -Path $ConfigPath
+$Parameters | Export-Clixml -Path $ConfigFile
 Remove-Variable Parameters
 }

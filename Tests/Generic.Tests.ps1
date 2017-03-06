@@ -79,7 +79,7 @@ Describe 'Module Information' -Tags 'Command'{
             $Script:Manifest.RootModule | Should Be "$ModuleName.psm1"
         }
         It 'Valid Manifest GUID' {
-            ($Script:Manifest.Guid -as [guid]).GetType()| Should be 'guid'
+            ($Script:Manifest.guid).gettype().name | Should be 'Guid'
         }
         It 'No Format File' {
             $Script:Manifest.ExportedFormatFiles | Should not BeNullOrEmpty
