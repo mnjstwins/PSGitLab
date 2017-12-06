@@ -112,7 +112,8 @@ FunctionsToExport = @(
     'Push-SSHKeysToGitLab',
     'Get-GitLabProjectSubmodule',
     'Get-GitLabProjectArchive',
-    'Get-GitLabProjectRepositoryTree'
+    'Get-GitLabProjectRepositoryTree',
+    'Get-GitLabSetting'
     )
 
 # Cmdlets to export from this module
