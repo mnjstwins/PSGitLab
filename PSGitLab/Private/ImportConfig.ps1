@@ -8,6 +8,16 @@ Function ImportConfig {
     ImportConfig
 #>
 
+if ( ( Test-Path env:PSGitLabDomain) -and ( Test-Path env:PSGitLabToken ) -and ( Test-Path env:PSGitLaAPIVersion ) ) {
+    $Token = ConvertTo-SecureString -String $env:PSGitLabToken -AsPlainText -Force
+    [PSCustomObject]@{
+        Domain=$env:PSGitLabDomain
+        Token=$Token
+        APIVersion=$env:PSGitLabAPIVersion
+    }
+    break;
+}
+
 if ( $IsWindows -or ( [version]$PSVersionTable.PSVersion -lt [version]"5.99.0" ) ) {
     $ConfigFile = "{0}\PSGitLab\PSGitLabConfiguration.xml" -f $env:appdata
 } elseif ( $IsLinux ) {

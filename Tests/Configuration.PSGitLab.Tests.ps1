@@ -60,21 +60,65 @@ InModuleScope PSGitLab {
             & $ImportCLIXML $FilePath
         }
 
-        It '<TestName>' -TestCases $TestCase {
-            param(
-                $Domain,
-                $Token,
-                $APIVersion
-            )  
-            $Act           
-            Save-GitLabAPIConfiguration -Token $Token -Domain $Domain -APIVersion $APIVersion
-            $Results = ImportConfig $FilePath
-            
-            # Assert
-            $Results.Domain | Should be $Domain
-            $Results.APIVersion | Should be $APIVersion
-            $Results.Token.GetType() | Should be 'SecureString'
-            DecryptString -Token $Results.Token | Should be $Token
+        Context 'Using Configuration File' {
+            It '<TestName>' -TestCases $TestCase {
+                param(
+                    $Domain,
+                    $Token,
+                    $APIVersion
+                )  
+                # Act           
+                Save-GitLabAPIConfiguration -Token $Token -Domain $Domain -APIVersion $APIVersion
+                $Results = ImportConfig $FilePath
+                
+                # Assert
+                $Results.Domain | Should be $Domain
+                $Results.APIVersion | Should be $APIVersion
+                $Results.Token.GetType() | Should be 'SecureString'
+                DecryptString -Token $Results.Token | Should be $Token
+            }
+
+        }
+
+        Context "Using Environment" {
+            It '<TestName>' -TestCases $TestCase {
+                param(
+                    $Domain,
+                    $Token,
+                    $APIVersion
+                )
+                # Arrange - Continued
+                $env:PSGitLabDomain = $Domain
+                $env:PSGitLabToken = $Token
+                $env:PSGitLabAPIVersion = $APIVersion
+
+                # Act 
+                Save-GitLabAPIConfiguration -Token 'IgnoredToken' -Domain 'https://IgnoredDomain' -APIVersion 1
+                $Results = ImportConfig $FilePath
+
+                # Assert 
+                $Results.Domain | Should be $Domain
+                $Results.APIVersion | Should be $APIVersion
+                $Results.Token.GetType() | Should be 'SecureString'
+                DecryptString -Token $Results.Token | Should be $Token
+            }
+
+            It 'Missing Domain' {
+                # Arrange - Continued
+                Remove-Item Env:\PSGitLabDomain
+                $env:PSGitLabToken = 'ENV'
+                $env:PSGitLabAPIVersion = 4
+
+                # Act 
+                Save-GitLabAPIConfiguration -Token 'File' -Domain 'https://FileDomain' -APIVersion 3
+                $Results = ImportConfig $FilePath
+                
+                # Assert
+                $Results.Domain | Should be 'https://FileDomain'
+                $Results.APIVersion | Should be 3
+                $Results.Token.GetType() | Should be 'SecureString'
+                DecryptString -Token $Results.Token | Should be 'File'
+            }
         }
     }
 
